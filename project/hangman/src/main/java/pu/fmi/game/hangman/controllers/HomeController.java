@@ -46,27 +46,19 @@ public class HomeController {
 
     HangmanGame hangmanGame = hangmanGameService.makeGuess(id, guessLetter);
 
-    // TODO: Добавете логика, за край на
-    //  играта - да се показва game-end.html и
-    //  съобщение "Спечелена"  или "Загубена"
-
-    if(hangmanGame.getStatus().equals(Status.WON)){
-      ModelAndView modelAndViewWon =
-          new ModelAndView("game-end.html");
-      modelAndViewWon.addObject("message", "Спечелена");
-      return modelAndViewWon;
-    }
-    if(hangmanGame.getStatus().equals(Status.LOST)){
-      ModelAndView modelAndViewLost =
-          new ModelAndView("game-end.html");
-      modelAndViewLost.addObject("message", "Загубена");
-      return modelAndViewLost;
+    if (hangmanGame.getStatus().equals(Status.WON)) {
+      return new ModelAndView("game-end.html")
+              .addObject("message", "Победа");
     }
 
-    ModelAndView modelAndView = new ModelAndView("play-game.html");
-    modelAndView.addObject("hangmanGame", hangmanGame);
-    modelAndView.addObject("letters", GameUtils.getLetters());
-    return modelAndView;
+    if (hangmanGame.getStatus().equals(Status.LOST)) {
+      return new ModelAndView("game-end.html")
+              .addObject("message", "Загубба");
+    }
+
+    return new ModelAndView("play-game.html")
+            .addObject("hangmanGame", hangmanGame)
+            .addObject("letters", GameUtils.getLetters());
   }
 
 }
